@@ -1,0 +1,26 @@
+{
+  "name": "cyberguards",
+  "version": "1.0.0",
+  "description": "### Problem with which we are tackling: In the recent elections, as we saw there were many news which lack in authenticity and in the vast democracy like India, such type of problems can lead to catastrophobic results on the election outcome and they sometimes tend to sabotage the elections. Moreover, in our country there is a system of election propaganda, but we dont have any system to rate these propagandas on the basis of public opinion. If we have such a system to rate these promises/propagandas made by the candidates, then it will be much easier for the common public to make an informed decision while choosing the right candidate. The third problem that we see is that many times, people are not able to vote because they are doing there jobs or living in a remote location.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "next dev"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sahil839/cyberguards.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sahil839/cyberguards/issues"
+  },
+  "homepage": "https://github.com/sahil839/cyberguards#readme",
+  "dependencies": {
+    "next": "^9.0.3",
+    "react": "^16.9.0",
+    "react-dom": "^16.9.0",
+    "semantic-ui-react": "^0.87.3"
+  }
+}

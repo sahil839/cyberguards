@@ -9,3 +9,6 @@ build
 
 # environment variables
 .env
+
+.next/
+.DS_Store
