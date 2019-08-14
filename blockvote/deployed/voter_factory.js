@@ -3,7 +3,7 @@ import VoterFactory from "../build/contracts/VoterFactory.json";
 
 const instance = new web3.eth.Contract(
   VoterFactory.abi,
-  "0x449C4cd052fDfe507F3958C613FfE6358ac68689"
+  "0x36C5b9c89567A832144BeF2F089fece04b932752"
 );
 
 export default instance;

@@ -71,6 +71,20 @@ contract Voter{
     function returnAddress() public view returns (address){
         return address(this);
     }
+
+    function returnVoterInfo() public view returns (uint256, uint8, uint8, uint16, string memory, int,bool, bool, address){
+        return(
+                voterDetails.aadhaar,
+                voterDetails.dob.day,
+                voterDetails.dob.month,
+                voterDetails.dob.year,
+                voterDetails.name,
+                voterDetails.ward,
+                voterDetails.hasVoted,
+                voterDetails.isCandidate,
+                voterDetails.candidateAddress
+            );
+    }
     
     modifier restricted() {
         require(msg.sender == voterFactory, "Must be created by factory in Voter");
