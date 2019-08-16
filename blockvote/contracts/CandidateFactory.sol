@@ -2,7 +2,7 @@ pragma solidity >=0.4.22 <0.6.0;
 import "./Candidate.sol";
 
 contract CandidateFactory{
-    address private owner=address(0x4c6691638e041B55D3CD7564dF2c01e67F0cF15F); // Admin Address
+    address private owner=address(0x304e43E858FC4E90dd04F0A4B6AeC45E2B0acEFd); // Admin Address
     address private voterFactoryAddress;
     // mapping(uint256=>address) candidatesList2;
     mapping(int=>address[]) candidatesList;

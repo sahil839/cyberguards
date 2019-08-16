@@ -1,8 +1,25 @@
 import React, { Component } from "react";
 import { Card, Grid, Button, Container } from "semantic-ui-react";
+import Voter from "../blockvote/deployed/voter";
+import VoterFactory from "../blockvote/deployed/voter_factory";
 
 class UserDetails extends Component {
+  static async getInitialProps(props) {
+    const voterAddress = await VoterFactory.methods.returnVoterAddress(
+      props.query.aadhaar
+    );
+    const voter = await Voter(voterAddress);
+    const voterAadhaar = await voter.methods.displayHasVoted();
+    const voterVoteStatus = await voter.methods.returnVoterInfo();
+      // console.log(voterVoteStatus);
+    return {
+      aadhaar: props.query.aadhaar
+    };
+  }
+
   renderCards() {
+    console.log(this.props.aadhaar);
+    // const voter = Voter(this.props.aadhaar);
     const items = [
       {
         header: "Sahil",
@@ -18,7 +35,7 @@ class UserDetails extends Component {
         meta: "Date of Birth"
       },
       {
-        header: "1",
+        header: this.props.aadhaar,
         meta: "ward number"
       }
     ];

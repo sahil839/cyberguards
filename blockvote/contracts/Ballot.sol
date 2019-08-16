@@ -11,7 +11,7 @@ contract Ballot{
     }
     candidateDetails[] public candidateList;
     address[] candidateAddressList;
-    address admin = address(0x4c6691638e041B55D3CD7564dF2c01e67F0cF15F);
+    address admin = address(0x304e43E858FC4E90dd04F0A4B6AeC45E2B0acEFd);
     
     constructor() public restricted{
         // candidateDetails memory d;

@@ -19,7 +19,7 @@ contract Admin{
     mapping(uint256=>userInfo) usersList;
     DateTime resultDate;
     string electionName;
-    address private owner=address(0x4c6691638e041B55D3CD7564dF2c01e67F0cF15F);
+    address private owner=address(0x304e43E858FC4E90dd04F0A4B6AeC45E2B0acEFd);
     address public voterFactory;
     address[] private voterList;
     
