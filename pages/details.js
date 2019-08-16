@@ -4,38 +4,58 @@ import Voter from "../blockvote/deployed/voter";
 import VoterFactory from "../blockvote/deployed/voter_factory";
 
 class UserDetails extends Component {
+  state = {
+    voter: {
+      aadhaar: 0,
+      d: 0,
+      m:0, y:0,name: "",
+      ward: 0,
+      hasVoted: "",
+      isCandidate: "",
+      candidateAddress: 0
+    },
+    message: "Hi"
+  };
+
   static async getInitialProps(props) {
-    const voterAddress = await VoterFactory.methods.returnVoterAddress(
-      props.query.aadhaar
-    );
-    const voter = await Voter(voterAddress);
-    const voterAadhaar = await voter.methods.displayHasVoted();
-    const voterVoteStatus = await voter.methods.returnVoterInfo();
-      // console.log(voterVoteStatus);
+    const { aadhaar } = props.query;
     return {
-      aadhaar: props.query.aadhaar
+      aadhaar
     };
+  }
+  async componentDidMount() {
+    const voterAddress = await VoterFactory.methods
+      .returnVoterAddress(this.props.aadhaar)
+      .call();
+    console.log(voterAddress);
+    const voter = await Voter(voterAddress);
+    console.log(voter);
+    const voterInfo = await voter.methods.returnVoterInfo().call();
+    console.log(voterInfo);
+    this.setState({voter : voterInfo});
   }
 
   renderCards() {
-    console.log(this.props.aadhaar);
-    // const voter = Voter(this.props.aadhaar);
     const items = [
       {
-        header: "Sahil",
+        key: "name",
+        header: this.state.voter.name,
         meta: "Name",
         style: { overflowWrap: "break-word" }
       },
       {
-        header: "6174-2876-9876",
+        key: "aadhaar",
+        header: this.state.voter.aadhaar,
         meta: "Aadhaar Number"
       },
       {
-        header: "06-09-199",
+        key:"dob",
+        header: `${this.state.voter[1]}-${this.state.voter[2]}-${this.state.voter[3]}`,
         meta: "Date of Birth"
       },
       {
-        header: this.props.aadhaar,
+        key:"ward",
+        header: this.state.voter.ward,
         meta: "ward number"
       }
     ];
