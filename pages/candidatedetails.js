@@ -21,10 +21,10 @@ class CampaignIndex extends Component {
 
   renderCampaigns() {
     return this.props.candidates.map(candidate =>
-            <div class="card">
+            <div class="card" style={{width: '100%'}}>
             <div class="content">
-              <div class="header">{candidate.name}</div>
-              <div class="description">
+              <div class="header" style={{textAlign:'center'}}>{candidate.name}</div>
+              <div class="description" style={{textAlign:'center'}}>
                 {candidate.aadhar}
               </div>
             </div>
