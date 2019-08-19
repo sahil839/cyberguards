@@ -1,55 +1,85 @@
-import React, { Component } from 'react';
-import { Card, Button, Container } from 'semantic-ui-react';
-// import factory from '../ethereum/factory';
-// import Layout from '../components/Layout';
-// import { Link } from '../routes';
+import React, { Component } from "react";
+import { Card, Button, Container } from "semantic-ui-react";
+import Candidate from "../blockvote/deployed/candidate";
+import CandidateFactory from "../blockvote/deployed/candidate_factory";
+import web3 from "../blockvote/deployed/web3";
 
 class CampaignIndex extends Component {
-    static getInitialProps(){
-        const candidates = [
-        {
-            name: "Sahil",
-            aadhar: "545834959345830"
-        } , 
-        {
-            name: "Mayank",
-            aadhar: "353453465346365"
-        }
-    ]
-    return {candidates};
-}
+  state = {
+    admin: "",
+    message: "Hi",
+    candidateAddressList: [],
+    candidateList: []
+  };
 
-  renderCampaigns() {
-    return this.props.candidates.map(candidate =>
-            <div class="card">
-            <div class="content">
-              <div class="header">{candidate.name}</div>
-              <div class="description">
-                {candidate.aadhar}
-              </div>
-            </div>
-            <div class="ui bottom attached button">
-              <i class="add icon"></i>
-              Vote
-            </div>
-          </div>
-    )
-}
+  static async getInitialProps(props) {
+    const { ward } = props.query;
+    return {
+      ward
+    };
+  }
+
+  async componentDidMount() {
+    const accounts = await web3.eth.getAccounts();
+    this.setState({ admin: accounts[0] });
+    const candidateList = await CandidateFactory.methods
+      .returnCandidateList(this.props.ward)
+      .call();
+    console.log(candidateList);
+    this.setState({ candidateAddressList: candidateList });
+    console.log(this.state.candidateAddressList);
+    this.createCandidateList();
+  }
+
+  createCandidateList = async () => {
+    let candidateList = [];
+    for (let i = 0; i < this.state.candidateAddressList.length; i++) {
+      const candidate = await Candidate(this.state.candidateAddressList[i])
+        .methods.returnCandidateInfo()
+        .call();
+      const candidateInfo = {
+        name: candidate[0],
+        ward: candidate[1],
+        party: candidate[2],
+        key: candidate[3]
+      };
+      console.log(candidateInfo);
+      candidateList.push(candidateInfo);
+    }
+    console.log(candidateList);
+    this.setState({ candidateList: candidateList });
+    console.log(this.state.candidateList);
+  };
+
+  renderCards() {
+    return this.state.candidateList.map(candidate => (
+      <div className="card" key={candidate.party}>
+        <div className="content">
+          <div className="header">{candidate.name}</div>
+          <div className="party">{candidate.party}</div>
+        </div>
+        <div className="ui bottom attached button">
+          <i className="add icon" />
+          Vote
+        </div>
+      </div>
+    ));
+    // return <Card.Group items={items} />;
+  }
 
   render() {
     return (
-        <div>
-            <link
+      <div>
+        <link
           rel="stylesheet"
           href="//cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css"
         />
         <Container>
-          <h2 style={{ marginTop: '20px' }}>Candidate List of Your Ward</h2>
-          <div class = "ui cards">
-          {this.renderCampaigns()}
-          </div>
-          </Container> 
-        </div>
+          <h2 style={{ marginTop: "20px" }}>Candidate List of Your Ward</h2>
+          <div className="ui cards"> {this.renderCards()} </div>
+          {/* <Button onClick={this.createCandidateList} /> */}
+        </Container>
+      </div>
     );
   }
 }
