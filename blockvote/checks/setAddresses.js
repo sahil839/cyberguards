@@ -121,7 +121,7 @@ module.exports = function(done) {
     .then(function(result) {
       console.log("Transaction hash: ", result.tx);
       console.log("Request complete");
-      done();
+      done(); 
     })
     .catch(function(e) {
       console.log(e);

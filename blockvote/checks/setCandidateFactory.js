@@ -1,4 +1,4 @@
-var CandidateFactory = artifacts.require("CandidateFactory");
+  var CandidateFactory = artifacts.require("CandidateFactory");
 var VoterFactory = artifacts.require("VoterFactory");
 
 module.exports = function(done) {
