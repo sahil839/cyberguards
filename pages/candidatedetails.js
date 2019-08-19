@@ -11,7 +11,7 @@ class CampaignIndex extends Component {
     candidateAddressList: [],
     candidateList: []
   };
-
+  
   static async getInitialProps(props) {
     const { ward } = props.query;
     return {
