@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import { Card, Button, Container } from "semantic-ui-react";
 import Candidate from "../blockvote/deployed/candidate";
 import CandidateFactory from "../blockvote/deployed/candidate_factory";
+import VoterFactory from "../blockvote/deployed/voter_factory";
+import Ballot from "../blockvote/deployed/ballot";
 import web3 from "../blockvote/deployed/web3";
 
 class CampaignIndex extends Component {
@@ -11,7 +13,7 @@ class CampaignIndex extends Component {
     candidateAddressList: [],
     candidateList: []
   };
-  
+
   static async getInitialProps(props) {
     const { ward } = props.query;
     return {
@@ -39,9 +41,9 @@ class CampaignIndex extends Component {
         .call();
       const candidateInfo = {
         name: candidate[0],
-        ward: candidate[1],
+        aadhaar: candidate[1],
         party: candidate[2],
-        key: candidate[3]
+        address: this.state.candidateAddressList[i]
       };
       console.log(candidateInfo);
       candidateList.push(candidateInfo);
@@ -51,17 +53,31 @@ class CampaignIndex extends Component {
     console.log(this.state.candidateList);
   };
 
+  vote = async candidate => {
+    console.log(candidate);
+    const voterAddress = await VoterFactory.methods
+      .returnVoterAddress(2)
+      .call();
+    await Ballot.methods
+      .vote(candidate, voterAddress)
+      .send({ from: this.state.admin });
+  };
+
   renderCards() {
+    let i = 0;
     return this.state.candidateList.map(candidate => (
-      <div className="card" key={candidate.party}>
+      <div className="card" key={candidate.aadhaar}>
         <div className="content">
           <div className="header">{candidate.name}</div>
-          <div className="party">{candidate.party}</div>
+          <div className="description">{candidate.party}</div>
         </div>
-        <div className="ui bottom attached button">
+        <Button
+          className="ui bottom attached button"
+          onClick={()=>this.vote(candidate.address)}
+        >
           <i className="add icon" />
           Vote
-        </div>
+        </Button>
       </div>
     ));
     // return <Card.Group items={items} />;
