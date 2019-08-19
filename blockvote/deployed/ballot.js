@@ -2,8 +2,8 @@ import web3 from "./web3";
 import Ballot from "../build/contracts/Ballot.json";
 
 const instance = new web3.eth.Contract(
-  JSON.parse(Ballot.abi),
-  "0x166db5ef3A5223a025122c9Bdc2bDe26DedD6c60"
+  Ballot.abi,
+  "0x3B2ae1BFD93D2Bef48b3B8481E2aEDB5456679F9"
 );
 
 export default instance;

@@ -3,7 +3,7 @@ import Admin from "../build/contracts/Admin.json";
 
 const instance = new web3.eth.Contract(
   JSON.parse(Admin.abi),
-  "0xA4ee6f2626BDe920af606e0cddB62F6FfD15189a"
+  "0x1442cc8d6466659A4f008612982A68Ed2377a02e"
 );
 
 export default instance;
