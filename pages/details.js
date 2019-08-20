@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Card, Grid, Button, Container } from "semantic-ui-react";
 import Voter from "../blockvote/deployed/voter";
 import VoterFactory from "../blockvote/deployed/voter_factory";
+import Candidate from "../blockvote/deployed/candidate";
 import { Router } from "../routes";
 import web3 from "../blockvote/deployed/web3";
 
@@ -19,6 +20,7 @@ class UserDetails extends Component {
       isCandidate: false,
       candidateAddress: 0
     },
+    candidate: {},
     voterAddress: "",
     message: "Hi"
   };
@@ -41,6 +43,18 @@ class UserDetails extends Component {
     const voterInfo = await voter.methods.returnVoterInfo().call();
     console.log(voterInfo);
     this.setState({ voter: voterInfo, voterAddress: voterAddress });
+    if (voterInfo.isCandidate) {
+      const candidate = await Candidate(voterInfo.candidateAddress)
+        .methods.returnCandidateInfo()
+        .call();
+      const candidateInfo = {
+        name: candidate[0],
+        aadhaar: candidate[1],
+        party: candidate[2]
+      };
+      console.log(candidateInfo);
+      this.setState({ candidate: candidateInfo });
+    }
   }
 
   renderCards() {
@@ -73,20 +87,8 @@ class UserDetails extends Component {
     return <Card.Group items={items} />;
   }
 
-  becomeCandidate = async () => {
-    const voter = await Voter(this.state.voterAddress);
-    const accounts = await web3.eth.getAccounts();
-    const account0 = accounts[0];
-    console.log(this.state.admin, account0);
-    const candidateAddress = await voter.methods
-      .becomeCandidate(true, "BJP")
-      .send({
-        from: accounts[0],
-        gas: 3000000
-      });
-    // console.log(candidateAddress);
-    // Router.push(`/details/${this.state.aadhaar}`);
-    // Router.push(`/candidatedetails/${this.state.voter.ward}`);
+  becomeCandidate = () => {
+    Router.push(`/candidate/${this.props.aadhaar}`);
   };
 
   openCandidateList = () => {
@@ -94,6 +96,35 @@ class UserDetails extends Component {
   };
 
   render() {
+    let button, temp;
+    if (!this.state.voter.isCandidate) {
+      console.log(this.state.candidate);
+      button = (
+        <Button primary onClick={this.becomeCandidate}>
+          Become a Candidate
+        </Button>
+      );
+      temp = null;
+    } else {
+      button = null;
+      temp = (
+        <div>
+          <Grid.Row>
+            <h3>Candidate Details</h3>
+          </Grid.Row>
+          <Grid.Row>
+            <div className="ui card">
+              <div className="content">
+                <div className="header">{this.state.candidate.party}</div>
+                <div className="meta">
+                  <span className="date">Party Name</span>
+                </div>
+              </div>
+            </div>
+          </Grid.Row>
+        </div>
+      );
+    }
     return (
       <div>
         <link
@@ -106,15 +137,13 @@ class UserDetails extends Component {
             <Grid.Row>
               <Grid.Column width={10}>{this.renderCards()}</Grid.Column>
             </Grid.Row>
-
+            {temp}
             <Grid.Row>
               <Grid.Column>
                 <Button primary onClick={this.openCandidateList}>
                   Vote
                 </Button>
-                <Button primary onClick={this.becomeCandidate}>
-                  Become a Candidate
-                </Button>
+                {button}
               </Grid.Column>
             </Grid.Row>
           </Grid>
