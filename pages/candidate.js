@@ -30,9 +30,7 @@ class CandidateForm extends Component {
         from: accounts[0],
         gas: 3000000
       });
-    // console.log(candidateAddress);
-    // Router.push(`/details/${this.state.aadhaar}`);
-    // Router.push(`/candidatedetails/${this.state.voter.ward}`);
+    Router.push(`/details/${this.state.aadhaar}`);
   };
   render() {
     return (
